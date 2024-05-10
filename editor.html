@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Python Compiler</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        #editor, #output {
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #editor {
+            height: 400px;
+        }
+        #output {
+            height: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .run-button {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+        .navbar {
+            background-color: #4CAF50;
+            border-radius: 0px;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .navbar-nav .nav-link {
+            margin-right: 10px;
+        }
+        .navbar-toggler-icon {
+            color: white;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 5px 0; /* Reduced padding */
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 7%;
+            font-size: 12px; /* Reduced font size */
+        }
+        .footer a {
+            color: white;
+        }
+        #footer-cont {
+            text-align: center;
+            position: absolute;
+            margin-top: 10px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!---navbar--->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fab fa-python"></i> Python Playground</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-star"></i> Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-dollar-sign"></i> Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-envelope"></i> Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h4 class="mb-3">Python Code Editor</h4>
+                <div id="editor">print("Hello, world!")</div>
+                <button onclick="runCode()" class="btn btn-primary run-button">Run</button>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h4 class="mb-3">Output</h4>
+                <pre id="output"></pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container" id="footer-cont">
+            <a href="https://github.com/your-github-repo" target="_blank"><i class="fab fa-github"></i></a>
+            <p>© Theinit01 - All Rights Reserved</p>
+        </div>
+    </footer>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/python");
+        function runCode() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:5000/run", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            var code = editor.getValue();
+            var encodedData = btoa(code); // Base64 encode the code
+            var data = {
+                code: encodedData
+            };
+            xhr.onload = function () {
+                var result = JSON.parse(xhr.responseText);
+                document.getElementById("output").innerText = result.output || result.error;
+            };
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
