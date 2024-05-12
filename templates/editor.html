@@ -127,7 +127,13 @@
         editor.session.setMode("ace/mode/python");
         function runCode() {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:5000/run", true);
+            // Get the base URL dynamically based on the current page location
+            var baseURL = window.location.protocol + "//" + window.location.host;
+        
+            // Construct the full URL for the backend endpoint
+            var backendURL = baseURL + "/run";
+        
+        xhr.open("POST", backendURL, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             var code = editor.getValue();
             var encodedData = btoa(code); // Base64 encode the code
