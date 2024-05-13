@@ -4,7 +4,7 @@
 Welcome to Python Playground! This repository contains an online Python editor where you can write and run Python code directly from your browser. The editor supports syntax highlighting and displays program outputs and error messages in real-time.
 
 <p align=center> 
-<img src="">
+<img src="https://github.com/theinit01/online-codeCompiler/blob/main/templates/Architecture-of-Code-Editor-e1704601599726.jpg">
 </p>
 
 ## Features
