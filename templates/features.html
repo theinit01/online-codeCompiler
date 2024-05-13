@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Python Compiler</title>
+    <title>Features Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -14,25 +13,20 @@
         .container {
             margin-top: 20px;
         }
-        #editor, #output {
+        .card {
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-        #editor {
-            height: 400px;
+        .card-header {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 10px 10px 0 0;
         }
-        #output {
-            height: 400px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-        .run-button {
-            width: 100%;
-            margin-top: 20px;
-            border-radius: 20px;
+        .card-body {
+            padding: 20px;
         }
         .navbar {
             background-color: #4CAF50;
@@ -101,15 +95,35 @@
     </nav>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <h4 class="mb-3">Python Code Editor</h4>
-                <div id="editor">print("Hello, world!")</div>
-                <button onclick="runCode()" class="btn btn-primary run-button">Run</button>
+        <div class="card">
+            <div class="card-header">
+                <h4>Architecture of Online Python Editor</h4>
             </div>
-            <div class="col-md-6 mb-4">
-                <h4 class="mb-3">Output</h4>
-                <pre id="output"></pre>
+            <div class="card-body">
+                <p>Let us look at the major components of the online code editor we are developing.</p>
+                <ul>
+                    <li>Create a basic UI that will allow the user to submit any Python program and later display the result of program execution.</li>
+                    <li>Create a Flask App that will interpret the submitted Python code and execute it using the installed Python runtime. It will also capture the output and return it as the API response.</li>
+                    <li>Containerize the Flask App using Docker so we can publish it in public/private repositories and deploy it later in K8s clusters.</li>
+                    <li>Using the locally installed Docker Desktop to run the docker container in the K8s cluster that is also locally deployed. You can choose to deploy it on remote servers or cloud environments. This will allow the application to scale horizontally in case of increased workload.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Development Environment</h4>
+            </div>
+            <div class="card-body">
+                <p>To follow along, we’ll need a basic development environment with Python, Docker, Docker Desktop, and Kubernetes installed. For coding purposes, I am using IntelliJ Idea. You can select an IDE of your choice.</p>
+                <p>The UI is a simple HTML page that submits the code to the Flask application endpoint and displays the output whatever is returned from the App. Creating a feature-rich UI is out of the scope of this article.</p>
+                <p>Installed software are:</p>
+                <ul>
+                    <li>Python (We are using version 3.11)</li>
+                    <li>Docker and Docker Desktop</li>
+                    <li>Kubernetes</li>
+                    <li>IntelliJ Idea (or any other IDE)</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -121,31 +135,5 @@
             <p>© Theinit01 - All Rights Reserved</p>
         </div>
     </footer>
-    <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/python");
-        function runCode() {
-            var xhr = new XMLHttpRequest();
-            // Get the base URL dynamically based on the current page location
-            var baseURL = window.location.protocol + "//" + window.location.host;
-        
-            // Construct the full URL for the backend endpoint
-            var backendURL = baseURL + "/run";
-        
-        xhr.open("POST", backendURL, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            var code = editor.getValue();
-            var encodedData = btoa(code); // Base64 encode the code
-            var data = {
-                code: encodedData
-            };
-            xhr.onload = function () {
-                var result = JSON.parse(xhr.responseText);
-                document.getElementById("output").innerText = result.output || result.error;
-            };
-            xhr.send(JSON.stringify(data));
-        }
-    </script>
 </body>
 </html>

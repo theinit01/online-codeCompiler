@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, url_for
 from flask_cors import CORS
 import subprocess
 import base64
@@ -7,13 +7,13 @@ import ast
 app = Flask(__name__)
 CORS(app)
 
-# ALLOWED_ORIGIN = 'https://mywebsite.com'
+#ALLOWED_ORIGIN = 'https://mywebsite.com'
 
 
-# @app.before_request
-# def check_origin():
+#@app.before_request
+#def check_origin():
 #  if request.headers.get('Origin') != ALLOWED_ORIGIN:
-#    abort(403)
+#   abort(403)
 
 
 def contains_install_commands(code):
@@ -66,6 +66,10 @@ def run_code():
 @app.route('/')
 def index():
   return render_template('editor.html')
+
+@app.route('/features')
+def features():
+  return render_template('features.html')
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=5000, debug=True)
