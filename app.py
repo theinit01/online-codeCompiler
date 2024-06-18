@@ -7,13 +7,6 @@ import ast
 app = Flask(__name__)
 CORS(app)
 
-#ALLOWED_ORIGIN = 'https://mywebsite.com'
-
-
-#@app.before_request
-#def check_origin():
-#  if request.headers.get('Origin') != ALLOWED_ORIGIN:
-#   abort(403)
 
 
 def contains_install_commands(code):
